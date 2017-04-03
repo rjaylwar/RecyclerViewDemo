@@ -17,21 +17,22 @@ import java.util.List;
 
 public class PokemonAdapter extends RecyclerView.Adapter {
 
-    private List<String> mItems = new ArrayList<>();
+    private List<Pokemon> mItems = new ArrayList<>();
 
-    public void setItems(List<Pokemon> countries) {
-
+    public void setItems(List<Pokemon> pokemon) {
+        mItems = pokemon;
+        notifyDataSetChanged();
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return CountryViewHolder.inflate(parent);
+        return TextViewHolder.inflate(parent);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof CountryViewHolder) {
-            ((CountryViewHolder) holder).setText(mItems.get(position));
+        if(holder instanceof TextViewHolder) {
+            ((TextViewHolder) holder).setText(mItems.get(position).getName());
         }
     }
 
@@ -40,19 +41,23 @@ public class PokemonAdapter extends RecyclerView.Adapter {
         return mItems.size();
     }
 
-    static class CountryViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public int getItemViewType(int position) {
+        return 0;
+    }
+
+    static class TextViewHolder extends RecyclerView.ViewHolder {
 
         private TextView mTextView;
 
-        public static CountryViewHolder inflate(ViewGroup parent) {
-            return new CountryViewHolder(LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.view_holder_pokemon, parent, false));
+        public static TextViewHolder inflate(ViewGroup parent) {
+            return new TextViewHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.view_holder_text, parent, false));
         }
 
-        public CountryViewHolder(View itemView) {
+        public TextViewHolder(View itemView) {
             super(itemView);
-
-            mTextView = (TextView) itemView.findViewById(R.id.vhp_text);
+            mTextView = (TextView) itemView.findViewById(R.id.vht_text);
         }
 
         public void setText(String text) {

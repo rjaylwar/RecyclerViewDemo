@@ -13,6 +13,19 @@ public class Pokemon {
     @SerializedName("url")
     private String mUrl;
 
+    public String getName() {
+        return mName;
+    }
 
+    public String getUrl() {
+        return mUrl;
+    }
 
+    public void setName(String name) {
+        mName = name;
+    }
+
+    public void setUrl(String url) {
+        mUrl = url;
+    }
 }

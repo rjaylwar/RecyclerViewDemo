@@ -1,12 +1,11 @@
 package com.rja.moshizzle.pokemon;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.InputStream;
-import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -14,6 +13,8 @@ import java.util.List;
  */
 
 public class LocalPokemonProvider implements PokemonProvider {
+
+    private static final String TAG = LocalPokemonProvider.class.getSimpleName();
 
     private Gson mGson;
     private Context mContext;
@@ -24,6 +25,7 @@ public class LocalPokemonProvider implements PokemonProvider {
     }
 
     public List<Pokemon> readPokemon(Context context) throws Exception {
+        Log.v(TAG, "Getting Pokemon!");
         InputStream is = context.getAssets().open("pokemon.json");
 
         int size = is.available();
@@ -34,8 +36,8 @@ public class LocalPokemonProvider implements PokemonProvider {
         is.close();
 
         String json = new String(buffer, "UTF-8");
-        Type listType = new TypeToken<List<Pokemon>>(){}.getType();
-        return mGson.fromJson(json, listType);
+        Log.v(TAG, "Got Pokemon! " + json);
+        return mGson.fromJson(json, PokemonResponse.class).getResults();
     }
 
     @Override
@@ -44,6 +46,7 @@ public class LocalPokemonProvider implements PokemonProvider {
             callback.onSuccess(readPokemon(mContext));
         }
         catch(Exception e) {
+            e.printStackTrace();
             callback.onFailure(e);
         }
     }
