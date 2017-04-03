@@ -22,8 +22,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -85,26 +83,21 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void downloadData() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://api.giphy.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        GifyApi gifyApi = retrofit.create(GifyApi.class);
-        gifyApi.getRandomGifs().enqueue(new Callback<GifyApiResponse>() {
+        Gify gify = new Gify();
+        gify.getApi().getRandomGifs().enqueue(new Callback<Gify.Response>() {
 
             @Override
-            public void onResponse(Call<GifyApiResponse> call, Response<GifyApiResponse> response) {
+            public void onResponse(Call<Gify.Response> call, Response<Gify.Response> response) {
                 if(response.isSuccessful()) {
-                    List<GifyApiResponse.GifyInfo> cellInfos = response.body().gifyInfos;
-                    imageAdapter.setItem(getBaseContext(), cellInfos);
+                    List<Gify.Response.GifyData> data = response.body().getData();
+                    imageAdapter.setItem(getBaseContext(), data);
                 }
 
                 refreshLayout.setRefreshing(false);
             }
 
             @Override
-            public void onFailure(Call<GifyApiResponse> call, Throwable t) {
+            public void onFailure(Call<Gify.Response> call, Throwable t) {
                 Log.e("Retrofit", "error", t);
 
                 refreshLayout.setRefreshing(false);

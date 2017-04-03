@@ -14,13 +14,13 @@ import java.util.List;
 
 public class ImageAdapter extends RecyclerView.Adapter {
 
-    private List<GifyApiResponse.GifyInfo> mItems = new ArrayList<>();
+    private List<Gify.Response.GifyData> mItems = new ArrayList<>();
     private Context mContext;
 
-    public void setItem(Context context, List<GifyApiResponse.GifyInfo> list) {
+    public void setItem(Context context, List<Gify.Response.GifyData> list) {
         this.mContext = context;
         this.mItems = list;
-        notifyItemRangeInserted(0, list.size());
+        notifyDataSetChanged();
     }
 
     @Override
@@ -31,8 +31,17 @@ public class ImageAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof ImageViewHolder) {
-            ((ImageViewHolder) holder).loadData(mItems.get(position).toCellInfo(), mContext);
+            ((ImageViewHolder) holder).loadData(toCellInfo(mItems.get(position)), mContext);
         }
+    }
+
+    private CellInfo toCellInfo(Gify.Response.GifyData gifyData) {
+        CellInfo info = new CellInfo(gifyData.getId());
+        info.setMainUrl(gifyData.getGifyImages().getFullHeight().getUrl());
+        info.setProfileImageUrl("https://www.google.com/fit/static/images/fit-logo-fallback-anim.png");
+        info.setAspectRatio(gifyData.getGifyImages().getFullHeight().getAspectRatio());
+
+        return info;
     }
 
     @Override

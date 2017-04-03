@@ -2,6 +2,7 @@ package com.rja.moshizzle;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -46,6 +47,19 @@ public class Gify {
             return mGifyDatas;
         }
 
+        public List<CellInfo> toCellInfo() {
+            List<CellInfo> cellInfos = new ArrayList<>();
+
+            for(GifyData gifyData : mGifyDatas) {
+                CellInfo info = new CellInfo(gifyData.getId());
+                info.setMainUrl(gifyData.getGifyImages().getFullHeight().getUrl());
+                info.setProfileImageUrl("https://www.google.com/fit/static/images/fit-logo-fallback-anim.png");
+                info.setAspectRatio(gifyData.getGifyImages().getFullHeight().getAspectRatio());
+            }
+
+            return cellInfos;
+        }
+
         class GifyData {
 
             @SerializedName("id")
@@ -53,14 +67,6 @@ public class Gify {
 
             @SerializedName("images")
             GifyImages gifyImages;
-
-            public CellInfo toCellInfo() {
-                CellInfo info = new CellInfo(id);
-                info.setMainUrl(gifyImages.fullHeight.url);
-                info.setProfileImageUrl("https://www.google.com/fit/static/images/fit-logo-fallback-anim.png");
-                info.setAspectRatio(gifyImages.fullHeight.width / gifyImages.fullHeight.height);
-                return info;
-            }
 
             public String getId() {
                 return id;
@@ -111,6 +117,10 @@ public class Gify {
 
             public int getWidth() {
                 return width;
+            }
+
+            public float getAspectRatio() {
+                return width / height;
             }
         }
     }
