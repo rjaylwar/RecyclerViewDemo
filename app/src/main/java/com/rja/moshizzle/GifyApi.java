@@ -9,7 +9,7 @@ import retrofit2.http.GET;
 
 public interface GifyApi {
 
-    @GET("v1/gifs/trending?api_key=dc6zaTOxFJmzC")
+    @GET("v1/gifs/trending?api_key=dc6zaTOxFJmzC&limit=50")
     public Call<GifyApiResponse> getRandomGifs();
 
 }

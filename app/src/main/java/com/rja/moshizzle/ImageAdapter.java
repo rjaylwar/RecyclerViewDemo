@@ -39,4 +39,5 @@ public class ImageAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return mItems.size();
     }
+
 }

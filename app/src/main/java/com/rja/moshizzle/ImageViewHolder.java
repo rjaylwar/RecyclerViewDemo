@@ -1,6 +1,7 @@
 package com.rja.moshizzle;
 
 import android.content.Context;
+import android.support.percent.PercentFrameLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -34,9 +35,15 @@ public class ImageViewHolder extends RecyclerView.ViewHolder {
     public void loadData(final CellInfo data, final Context context) {
         Log.d("ImageViewHolder", data.toString());
 
+        PercentFrameLayout.LayoutParams params = (PercentFrameLayout.LayoutParams) mainImage.getLayoutParams();
+        params.getPercentLayoutInfo().aspectRatio = data.getAspectRatio();
+        params.getPercentLayoutInfo().widthPercent = 1f;
+
+        mainImage.setLayoutParams(params);
+
         Glide.with(context).load(data.getMainUrl())
                 .diskCacheStrategy(SOURCE)
-                .placeholder(R.mipmap.ic_launcher)
+                .placeholder(android.R.drawable.screen_background_dark_transparent)
                 .into(mainImage);
 
         Glide.with(context).load(data.getProfileImageUrl())

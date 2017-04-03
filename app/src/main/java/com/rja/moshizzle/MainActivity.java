@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity
     public void setUpList() {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.main_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        new GridLayoutManager(this, 4);
 
         this.imageAdapter = new ImageAdapter();
         recyclerView.setAdapter(imageAdapter);
